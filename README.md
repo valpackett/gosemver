@@ -33,6 +33,7 @@ Constraints:
 ```go
 ver := Version{"", 3, 0, 3, "", ""}
 ver.Satisfies("*") // true
+ver.Satisfies("~> 3.0.4") // false
 ver.Satisfies("~> 3.0.1") // true
 ver.Satisfies("~> 3.0") // true
 ver.Satisfies("~> 2.9") // false
@@ -43,5 +44,5 @@ ver.Satisfies("^2.9") // false
 ## TODO
 
 - parsing
-- more constaints (like [node semver](https://www.npmjs.org/doc/misc/semver.html))
+- more constraints (like [node semver](https://www.npmjs.org/doc/misc/semver.html))
 - executable (like, `ls | gosemver sort`, `gosemver inc patch 1.1.0`)
