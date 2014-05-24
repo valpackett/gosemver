@@ -14,6 +14,10 @@ func (v *Version) SatisfiesPessimisticWithPatch(major, minor, patch int) bool {
 }
 
 func (v *Version) Satisfies(constraint string) bool {
+	if constraint == "" || constraint == "*" || constraint == "x" {
+		return true
+	}
+
 	pessimisticWithPatchMatches := regexp.MustCompile(`^(?:~>|\^) ?([0-9]+)\.([0-9]+)(\.([0-9]+))`).FindStringSubmatch(constraint)
 	if pessimisticWithPatchMatches != nil {
 		major, _ := strconv.Atoi(pessimisticWithPatchMatches[1])
@@ -21,6 +25,7 @@ func (v *Version) Satisfies(constraint string) bool {
 		patch, _ := strconv.Atoi(pessimisticWithPatchMatches[4])
 		return v.SatisfiesPessimisticWithPatch(major, minor, patch)
 	}
+
 	pessimisticMatches := regexp.MustCompile(`^(?:~>|\^) ?([0-9]+)\.([0-9]+)`).FindStringSubmatch(constraint)
 	if pessimisticMatches != nil {
 		major, _ := strconv.Atoi(pessimisticMatches[1])

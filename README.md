@@ -32,6 +32,7 @@ Constraints:
 
 ```go
 ver := Version{"", 3, 0, 3, "", ""}
+ver.Satisfies("*") // true
 ver.Satisfies("~> 3.0.1") // true
 ver.Satisfies("~> 3.0") // true
 ver.Satisfies("~> 2.9") // false
