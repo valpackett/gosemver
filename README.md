@@ -4,13 +4,14 @@ A [Semantic Versioning](http://semver.org) library for the Go programming langua
 
 ## Usage
 
+```go
+import "github.com/myfreeweb/gosemver"
+```
+
 Sorting:
 
 ```go
-import (
-  "github.com/myfreeweb/gosemver"
-  "sort"
-)
+import "sort"
 
 vers := []Version{
   Version{"v", 1, 0, 0, "", ""},
@@ -20,9 +21,14 @@ vers := []Version{
 sort.Sort(Versions(vers))
 ```
 
+Output:
+
+```go
+ver := Version{"v", 2, 3, 1, "alpha", "build.001"},
+ver.String() // "v2.3.1-alpha+build.001"
+```
 
 ## TODO
 
 - parsing
-- output
 - executable (like, `ls | gosemver sort`, `gosemver inc patch 1.1.0`)

@@ -5,12 +5,12 @@ import (
 	"testing"
 )
 
-type testCase struct {
+type sortTestCase struct {
 	Before []Version
 	After  []Version
 }
 
-var tests = []testCase{
+var sortTests = []sortTestCase{
 	{ // Basic ordering
 		[]Version{ // Before
 			Version{"v", 0, 1, 0, "", ""},
@@ -46,7 +46,7 @@ var tests = []testCase{
 }
 
 func TestSorting(t *testing.T) {
-	for _, tcase := range tests {
+	for _, tcase := range sortTests {
 		result := make([]Version, len(tcase.Before))
 		copy(result, tcase.Before)
 		sort.Sort(Versions(result))
