@@ -1,5 +1,28 @@
 package gosemver
 
+func less(a, b *Version) bool {
+	if a.Major < b.Major {
+		return true
+	}
+	if a.Major == b.Major {
+		if a.Minor < b.Minor {
+			return true
+		}
+		if a.Minor == b.Minor {
+			if a.Patch < b.Patch {
+				return true
+			}
+			if a.Patch == b.Patch {
+				// should it just be alphabetical ordering? well, probably yes
+				// semver.org DOES NOT say ANYTHING about sorting pre-release identifiers
+				// "Pre-release versions have a lower precedence than the associated normal version," that's all
+				return a.Identifiers < b.Identifiers
+			}
+		}
+	}
+	return false
+}
+
 func (v Versions) Len() int {
 	return len(v)
 }
@@ -9,24 +32,17 @@ func (v Versions) Swap(i, j int) {
 }
 
 func (v Versions) Less(i, j int) bool {
-	if v[i].Major < v[j].Major {
-		return true
-	}
-	if v[i].Major == v[j].Major {
-		if v[i].Minor < v[j].Minor {
-			return true
-		}
-		if v[i].Minor == v[j].Minor {
-			if v[i].Patch < v[j].Patch {
-				return true
-			}
-			if v[i].Patch == v[j].Patch {
-				// should it just be alphabetical ordering? well, probably yes
-				// semver.org DOES NOT say ANYTHING about sorting pre-release identifiers
-				// "Pre-release versions have a lower precedence than the associated normal version," that's all
-				return v[i].Identifiers < v[j].Identifiers
-			}
-		}
-	}
-	return false
+	return less(&v[i], &v[j])
+}
+
+func (v VersionStrings) Len() int {
+	return len(v)
+}
+
+func (v VersionStrings) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+
+func (v VersionStrings) Less(i, j int) bool {
+	return less(parseVersion(v[i]), parseVersion(v[j]))
 }

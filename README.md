@@ -27,6 +27,18 @@ vers := []gosemver.Version{
 sort.Sort(gosemver.Versions(vers))
 ```
 
+You can also sort version strings!
+
+```go
+import "sort"
+
+verStrs := []string{
+  "1.9.3", "2.0.0", "1.9.3-alpha+build.001", "1.8.2-patch1"
+}
+
+sort.Sort(gosemver.VersionStrings(verStrs))
+```
+
 Output:
 
 ```go

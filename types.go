@@ -11,6 +11,8 @@ type Version struct {
 
 type Versions []Version
 
+type VersionStrings []string
+
 type Constraint struct {
 	Major      int
 	Minor      int
