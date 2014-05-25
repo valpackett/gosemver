@@ -11,7 +11,7 @@ import "github.com/myfreeweb/gosemver"
 Parsing:
 
 ```go
-parseVersion("v0.1.0-alpha+build001") // Version{"v", 0, 1, 0, "alpha", "build001"}
+gosemver.parseVersion("v0.1.0-alpha+build001") // Version{"v", 0, 1, 0, "alpha", "build001"}
 ```
 
 Sorting:
@@ -19,25 +19,25 @@ Sorting:
 ```go
 import "sort"
 
-vers := []Version{
-  Version{"v", 1, 0, 0, "", ""},
-  Version{"v", 0, 1, 0, "", ""},
+vers := []gosemver.Version{
+  {"v", 1, 0, 0, "", ""},
+  {"v", 0, 1, 0, "", ""},
 }
 
-sort.Sort(Versions(vers))
+sort.Sort(gosemver.Versions(vers))
 ```
 
 Output:
 
 ```go
-ver := Version{"v", 2, 3, 1, "alpha", "build.001"}
+ver := gosemver.Version{"v", 2, 3, 1, "alpha", "build.001"}
 ver.String() // "v2.3.1-alpha+build.001"
 ```
 
 Constraints:
 
 ```go
-ver := Version{"", 3, 0, 3, "", ""}
+ver := gosemver.Version{"", 3, 0, 3, "", ""}
 ver.Satisfies("*") // true
 ver.Satisfies("== 3.0.3") // true
 ver.Satisfies(">= 3.0.1") // true
