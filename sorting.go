@@ -44,5 +44,13 @@ func (v VersionStrings) Swap(i, j int) {
 }
 
 func (v VersionStrings) Less(i, j int) bool {
-	return less(parseVersion(v[i]), parseVersion(v[j]))
+	v1, err := parseVersion(v[i])
+	if err != nil {
+		panic(err)
+	}
+	v2, err := parseVersion(v[j])
+	if err != nil {
+		panic(err)
+	}
+	return less(v1, v2)
 }

@@ -39,6 +39,8 @@ verStrs := []string{
 sort.Sort(gosemver.VersionStrings(verStrs))
 ```
 
+**WARNING**: sorting version strings will `panic` if it can't parse a string!
+
 Output:
 
 ```go
@@ -50,16 +52,17 @@ Constraints:
 
 ```go
 ver := gosemver.Version{"", 3, 0, 3, "", ""}
-ver.Satisfies("*") // true
-ver.Satisfies("== 3.0.3") // true
-ver.Satisfies(">= 3.0.1") // true
-ver.Satisfies(">= 3.0") // true
-ver.Satisfies("> 3.0.0") // true
-ver.Satisfies("~> 3.0.4") // false
-ver.Satisfies("~> 3.0.1") // true
-ver.Satisfies("~> 3.0") // true
-ver.Satisfies("~> 2.9") // false
-ver.Satisfies("^2.9") // false
+// returns result, error:
+ver.Satisfies("*") // true, nil
+ver.Satisfies("== 3.0.3") // true, nil
+ver.Satisfies(">= 3.0.1") // true, nil
+ver.Satisfies(">= 3.0") // true, nil
+ver.Satisfies("> 3.0.0") // true, nil
+ver.Satisfies("~> 3.0.4") // false, nil
+ver.Satisfies("~> 3.0.1") // true, nil
+ver.Satisfies("~> 3.0") // true, nil
+ver.Satisfies("~> 2.9") // false, nil
+ver.Satisfies("^2.9") // false, nil
 // ^ and ~> are the same operator
 ```
 

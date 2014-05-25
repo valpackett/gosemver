@@ -1,13 +1,14 @@
 package gosemver
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
 )
 
 var constrRegexp = regexp.MustCompile(`^(|~>|\^|<|>|<=|>=|==) ?([0-9]+)\.([0-9]+)(\.([0-9]+))?`)
 
-func parseConstraint(input string) (string, *Constraint) {
+func parseConstraint(input string) (string, *Constraint, error) {
 	operator := ""
 	constr := new(Constraint)
 	matches := constrRegexp.FindStringSubmatch(input)
@@ -19,13 +20,15 @@ func parseConstraint(input string) (string, *Constraint) {
 			constr.Patch, _ = strconv.Atoi(matches[5])
 			constr.MatchPatch = true
 		}
+	} else {
+		return operator, constr, fmt.Errorf("Invalid constraint string: %s", input)
 	}
-	return operator, constr
+	return operator, constr, nil
 }
 
 var verRegexp = regexp.MustCompile(`^([^0-9]*)([0-9]+)\.([0-9]+)\.([0-9]+)(\-([^+]+))?(\+(.*))?`)
 
-func parseVersion(input string) *Version {
+func parseVersion(input string) (*Version, error) {
 	ver := new(Version)
 	matches := verRegexp.FindStringSubmatch(input)
 	if matches != nil {
@@ -35,6 +38,8 @@ func parseVersion(input string) *Version {
 		ver.Patch, _ = strconv.Atoi(matches[4])
 		ver.Identifiers = matches[6]
 		ver.BuildMetadata = matches[8]
+	} else {
+		return ver, fmt.Errorf("Invalid version string: %s", input)
 	}
-	return ver
+	return ver, nil
 }

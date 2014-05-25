@@ -53,12 +53,16 @@ func (v *Version) SatisfiesGreaterThanOrEqual(c *Constraint) bool {
 	return v.SatisfiesGreaterThan(c) || v.SatisfiesExact(c)
 }
 
-func (v *Version) Satisfies(constraint string) bool {
+func (v *Version) Satisfies(constraint string) (result bool, err error) {
 	if constraint == "" || constraint == "*" || constraint == "x" {
-		return true
+		return true, nil
 	}
-	operator, constr := parseConstraint(constraint)
-	return v.SatisfiesOp(operator, constr)
+	operator, constr, err := parseConstraint(constraint)
+	if err != nil {
+		return false, err
+	} else {
+		return v.SatisfiesOp(operator, constr), nil
+	}
 }
 
 func (v *Version) SatisfiesOp(operator string, constr *Constraint) bool {
