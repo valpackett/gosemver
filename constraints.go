@@ -24,11 +24,13 @@ func (v *Version) SatisfiesLessThan(c *Constraint) bool {
 	if v.Major < c.Major {
 		return true
 	}
-	if v.Minor < c.Minor {
-		return true
-	}
-	if c.MatchPatch && v.Patch < c.Patch {
-		return true
+	if v.Major == c.Major {
+		if v.Minor < c.Minor {
+			return true
+		}
+		if v.Minor == c.Minor && c.MatchPatch && v.Patch < c.Patch {
+			return true
+		}
 	}
 	return false
 }
@@ -41,11 +43,13 @@ func (v *Version) SatisfiesGreaterThan(c *Constraint) bool {
 	if v.Major > c.Major {
 		return true
 	}
-	if v.Minor > c.Minor {
-		return true
-	}
-	if c.MatchPatch && v.Patch > c.Patch {
-		return true
+	if v.Major == c.Major {
+		if v.Minor > c.Minor {
+			return true
+		}
+		if v.Minor == c.Minor && c.MatchPatch && v.Patch > c.Patch {
+			return true
+		}
 	}
 	return false
 }
