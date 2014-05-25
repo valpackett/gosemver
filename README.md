@@ -23,8 +23,8 @@ Sorting:
 import "sort"
 
 vers := []gosemver.Version{
-  {"v", 1, 0, 0, "", ""},
-  {"v", 0, 1, 0, "", ""},
+  gosemver.Version{"v", 1, 0, 0, "", ""},
+  gosemver.Version{"v", 0, 1, 0, "", ""},
 }
 
 sort.Sort(gosemver.Versions(vers))
@@ -67,6 +67,16 @@ ver.Satisfies("~> 3.0") // true, nil
 ver.Satisfies("~> 2.9") // false, nil
 ver.Satisfies("^2.9") // false, nil
 // ^ and ~> are the same operator
+```
+
+```go
+vers := []gosemver.Version{
+  gosemver.Version{"", 1, 2, 3, "", ""},
+  gosemver.Version{"", 0, 1, 5, "", ""},
+  gosemver.Version{"", 1, 0, 0, "", ""},
+}
+
+Versions(vers).FindAll(">= 1.0.0")
 ```
 
 ## TODO
