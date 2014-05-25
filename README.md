@@ -62,7 +62,8 @@ vers := []gosemver.Version{
   gosemver.Version{"", 1, 0, 0, "", ""},
 }
 
-gosemver.FindAll(vers, ">= 1.0.0")
+gosemver.FindAll(vers, ">= 1.0.0") // []gosemver.Version{gosemver.Version{"", 1, 2, 3, "", ""}, gosemver.Version{"", 1, 0, 0, "", ""},}
+gosemver.FindMax(vers, ">= 1.0.0") // gosemver.Version{"", 1, 2, 3, "", ""}
 ```
 
 ## TODO

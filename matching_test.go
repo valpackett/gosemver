@@ -32,3 +32,30 @@ func TestFindAll(t *testing.T) {
 		}
 	}
 }
+
+type findMaxTestCase struct {
+	Input  []Version
+	Constr string
+	Output Version
+}
+
+var findMaxTests = []findMaxTestCase{
+	{
+		[]Version{Version{"", 1, 2, 0, "", ""}, Version{"", 0, 5, 10, "", ""}, Version{"", 1, 1, 0, "", ""}},
+		">= 1.0.0",
+		Version{"", 1, 2, 0, "", ""},
+	},
+}
+
+func TestFindMax(t *testing.T) {
+	for _, tcase := range findMaxTests {
+		result, _ := FindMax(tcase.Input, tcase.Constr)
+		if *result != tcase.Output {
+			t.Error(
+				"For", tcase.Input, tcase.Constr,
+				"expected", tcase.Output,
+				"got", *result,
+			)
+		}
+	}
+}
