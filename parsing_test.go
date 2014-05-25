@@ -30,3 +30,29 @@ func TestParseConstraints(t *testing.T) {
 		}
 	}
 }
+
+type parseVersionTestCase struct {
+	Input  string
+	Result Version
+}
+
+var parseVersionTests = []parseVersionTestCase{
+	{"0.1.0", Version{"", 0, 1, 0, "", ""}},
+	{"v0.1.0", Version{"v", 0, 1, 0, "", ""}},
+	{"v0.1.0-alpha.1", Version{"v", 0, 1, 0, "alpha.1", ""}},
+	{"=0.1.0-beta+build.0001", Version{"=", 0, 1, 0, "beta", "build.0001"}},
+	{"версия1024.2048.4096-βββ+¾", Version{"версия", 1024, 2048, 4096, "βββ", "¾"}},
+}
+
+func TestParseVersions(t *testing.T) {
+	for _, tcase := range parseVersionTests {
+		result := parseVersion(tcase.Input)
+		if *result != tcase.Result {
+			t.Error(
+				"For", tcase.Input,
+				"expected", tcase.Result,
+				"got", *result,
+			)
+		}
+	}
+}

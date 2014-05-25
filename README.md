@@ -8,6 +8,12 @@ A [Semantic Versioning](http://semver.org) library for the Go programming langua
 import "github.com/myfreeweb/gosemver"
 ```
 
+Parsing:
+
+```go
+parseVersion("v0.1.0-alpha+build001") // Version{"v", 0, 1, 0, "alpha", "build001"}
+```
+
 Sorting:
 
 ```go
@@ -47,6 +53,5 @@ ver.Satisfies("^2.9") // false
 
 ## TODO
 
-- parsing
 - more constraints (like [node semver](https://www.npmjs.org/doc/misc/semver.html))
 - executable (like, `ls | gosemver sort`, `gosemver inc patch 1.1.0`)
