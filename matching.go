@@ -1,20 +1,20 @@
 package gosemver
 
-func (v Versions) FindAllOp(operator string, constraint Constraint) Versions {
-	result := make(Versions, 0)
-	for _, ver := range v {
-		if ver.SatisfiesOp(operator, &constraint) {
-			result = append(result, ver)
+func FindAllOp(vers []Version, operator string, constraint Constraint) []Version {
+	result := make([]Version, 0)
+	for _, v := range vers {
+		if v.SatisfiesOp(operator, &constraint) {
+			result = append(result, v)
 		}
 	}
 	return result
 }
 
-func (v Versions) FindAll(constraint string) (Versions, error) {
+func FindAll(vers []Version, constraint string) ([]Version, error) {
 	operator, constr, err := parseConstraint(constraint)
 	if err != nil {
-		return make(Versions, 0), err
+		return make([]Version, 0), err
 	} else {
-		return v.FindAllOp(operator, *constr), nil
+		return FindAllOp(vers, operator, *constr), nil
 	}
 }

@@ -20,7 +20,7 @@ var findAllTests = []findAllTestCase{
 
 func TestFindAll(t *testing.T) {
 	for _, tcase := range findAllTests {
-		result, _ := Versions(tcase.Input).FindAll(tcase.Constr)
+		result, _ := FindAll(tcase.Input, tcase.Constr)
 		for i, v := range result {
 			if v != tcase.Output[i] {
 				t.Error(

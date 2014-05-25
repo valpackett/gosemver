@@ -62,7 +62,7 @@ vers := []gosemver.Version{
   gosemver.Version{"", 1, 0, 0, "", ""},
 }
 
-Versions(vers).FindAll(">= 1.0.0")
+gosemver.FindAll(vers, ">= 1.0.0")
 ```
 
 ## TODO
