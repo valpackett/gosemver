@@ -47,7 +47,7 @@ var constrTests = []constrTestCase{
 
 func TestConstraints(t *testing.T) {
 	for _, tcase := range constrTests {
-		result := tcase.Input.SatisfiesOp(tcase.Op, &tcase.Constr)
+		result := tcase.Input.SatisfiesOp(tcase.Op, tcase.Constr)
 		if result != tcase.Result {
 			t.Error(
 				"For", tcase.Input, tcase.Op, tcase.Constr,

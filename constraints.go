@@ -1,13 +1,13 @@
 package gosemver
 
-func (v *Version) SatisfiesPessimistic(c *Constraint) bool {
+func (v Version) SatisfiesPessimistic(c Constraint) bool {
 	if c.MatchPatch {
 		return v.Major == c.Major && v.Minor == c.Minor && v.Patch >= c.Patch
 	}
 	return v.Major == c.Major && v.Minor >= c.Minor
 }
 
-func (v *Version) SatisfiesExact(c *Constraint) bool {
+func (v Version) SatisfiesExact(c Constraint) bool {
 	result := v.Major == c.Major && v.Minor == c.Minor
 	if c.MatchPatch {
 		return result && v.Patch == c.Patch
@@ -15,7 +15,7 @@ func (v *Version) SatisfiesExact(c *Constraint) bool {
 	return result
 }
 
-func (v *Version) SatisfiesLessThan(c *Constraint) bool {
+func (v Version) SatisfiesLessThan(c Constraint) bool {
 	if v.Major < c.Major {
 		return true
 	}
@@ -30,11 +30,11 @@ func (v *Version) SatisfiesLessThan(c *Constraint) bool {
 	return false
 }
 
-func (v *Version) SatisfiesLessThanOrEqual(c *Constraint) bool {
+func (v Version) SatisfiesLessThanOrEqual(c Constraint) bool {
 	return v.SatisfiesLessThan(c) || v.SatisfiesExact(c)
 }
 
-func (v *Version) SatisfiesGreaterThan(c *Constraint) bool {
+func (v Version) SatisfiesGreaterThan(c Constraint) bool {
 	if v.Major > c.Major {
 		return true
 	}
@@ -49,11 +49,11 @@ func (v *Version) SatisfiesGreaterThan(c *Constraint) bool {
 	return false
 }
 
-func (v *Version) SatisfiesGreaterThanOrEqual(c *Constraint) bool {
+func (v Version) SatisfiesGreaterThanOrEqual(c Constraint) bool {
 	return v.SatisfiesGreaterThan(c) || v.SatisfiesExact(c)
 }
 
-func (v *Version) Satisfies(constraint string) (result bool, err error) {
+func (v Version) Satisfies(constraint string) (result bool, err error) {
 	if constraint == "" || constraint == "*" || constraint == "x" {
 		return true, nil
 	}
@@ -65,7 +65,7 @@ func (v *Version) Satisfies(constraint string) (result bool, err error) {
 	}
 }
 
-func (v *Version) SatisfiesOp(operator string, constr *Constraint) bool {
+func (v Version) SatisfiesOp(operator string, constr Constraint) bool {
 	if operator == "*" || operator == "x" {
 		return true
 	} else if operator == "~>" || operator == "^" {

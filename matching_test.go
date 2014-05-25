@@ -50,11 +50,11 @@ var findMaxTests = []findMaxTestCase{
 func TestFindMax(t *testing.T) {
 	for _, tcase := range findMaxTests {
 		result, _ := FindMax(tcase.Input, tcase.Constr)
-		if *result != tcase.Output {
+		if result != tcase.Output {
 			t.Error(
 				"For", tcase.Input, tcase.Constr,
 				"expected", tcase.Output,
-				"got", *result,
+				"got", result,
 			)
 		}
 	}
