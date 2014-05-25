@@ -43,3 +43,15 @@ func parseVersion(input string) (*Version, error) {
 	}
 	return ver, nil
 }
+
+func parseVersions(input []string) ([]Version, error) {
+	vers := make([]Version, len(input))
+	for i, verStr := range input {
+		parsedVersion, err := parseVersion(verStr)
+		if err != nil {
+			return vers, err
+		}
+		vers[i] = *parsedVersion
+	}
+	return vers, nil
+}

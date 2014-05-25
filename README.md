@@ -11,7 +11,10 @@ import "github.com/myfreeweb/gosemver"
 Parsing:
 
 ```go
-gosemver.parseVersion("v0.1.0-alpha+build001") // Version{"v", 0, 1, 0, "alpha", "build001"}
+gosemver.parseVersion("v0.1.0-alpha+build001") // gosemver.Version{"v", 0, 1, 0, "alpha", "build001"}, nil
+gosemver.parseVersion("AAAAAAA") // gosemver.Version{"", 0, 0, 0, "", ""}, error
+
+gosemver.parseVersions([]string{"0.1.0", "0.2.0"}) // []gosemver.Version{{"", 0, 1, 0, "", ""}, {"", 0, 2, 0, "", ""},}, nil
 ```
 
 Sorting:
