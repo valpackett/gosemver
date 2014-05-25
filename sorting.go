@@ -9,14 +9,24 @@ func (v Versions) Swap(i, j int) {
 }
 
 func (v Versions) Less(i, j int) bool {
-	// breaks (?) if you have, like, version 8.131072.65536. who has versions like these though?
-	iNum := v[i].Major*1000000 + v[i].Minor*1000 + v[i].Patch
-	jNum := v[j].Major*1000000 + v[j].Minor*1000 + v[j].Patch
-	if iNum == jNum {
-		// should it just be alphabetical ordering? well, probably yes
-		// semver.org DOES NOT say ANYTHING about sorting pre-release identifiers
-		// "Pre-release versions have a lower precedence than the associated normal version," that's all
-		return v[i].Identifiers < v[j].Identifiers
+	if v[i].Major < v[j].Major {
+		return true
 	}
-	return iNum < jNum
+	if v[i].Major == v[j].Major {
+		if v[i].Minor < v[j].Minor {
+			return true
+		}
+		if v[i].Minor == v[j].Minor {
+			if v[i].Patch < v[j].Patch {
+				return true
+			}
+			if v[i].Patch == v[j].Patch {
+				// should it just be alphabetical ordering? well, probably yes
+				// semver.org DOES NOT say ANYTHING about sorting pre-release identifiers
+				// "Pre-release versions have a lower precedence than the associated normal version," that's all
+				return v[i].Identifiers < v[j].Identifiers
+			}
+		}
+	}
+	return false
 }
