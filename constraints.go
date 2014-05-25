@@ -1,10 +1,5 @@
 package gosemver
 
-import (
-	"regexp"
-	"strconv"
-)
-
 func (v *Version) SatisfiesPessimistic(c *Constraint) bool {
 	if c.MatchPatch {
 		return v.Major == c.Major && v.Minor == c.Minor && v.Patch >= c.Patch
@@ -58,29 +53,18 @@ func (v *Version) SatisfiesGreaterThanOrEqual(c *Constraint) bool {
 	return v.SatisfiesGreaterThan(c) || v.SatisfiesExact(c)
 }
 
-var constrRegexp = regexp.MustCompile(`^(|~>|\^|<|>|<=|>=|==) ?([0-9]+)\.([0-9]+)(\.([0-9]+))?`)
-
 func (v *Version) Satisfies(constraint string) bool {
 	if constraint == "" || constraint == "*" || constraint == "x" {
 		return true
 	}
+	operator, constr := parseConstraint(constraint)
+	return v.SatisfiesOp(operator, constr)
+}
 
-	operator := ""
-	constr := new(Constraint)
-	matches := constrRegexp.FindStringSubmatch(constraint)
-	if matches != nil {
-		operator = matches[1]
-		constr.Major, _ = strconv.Atoi(matches[2])
-		constr.Minor, _ = strconv.Atoi(matches[3])
-		if matches[5] != "" {
-			constr.Patch, _ = strconv.Atoi(matches[5])
-			constr.MatchPatch = true
-		}
-	}
-
-	// fmt.Println(operator, constr)
-
-	if operator == "~>" || operator == "^" {
+func (v *Version) SatisfiesOp(operator string, constr *Constraint) bool {
+	if operator == "*" || operator == "x" {
+		return true
+	} else if operator == "~>" || operator == "^" {
 		return v.SatisfiesPessimistic(constr)
 	} else if operator == "" || operator == "==" {
 		return v.SatisfiesExact(constr)
@@ -93,6 +77,5 @@ func (v *Version) Satisfies(constraint string) bool {
 	} else if operator == ">=" {
 		return v.SatisfiesGreaterThanOrEqual(constr)
 	}
-
 	return false
 }
