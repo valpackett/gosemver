@@ -41,7 +41,7 @@ var parseVersionTests = []parseVersionTestCase{
 	{"v0.1.0", Version{"v", 0, 1, 0, "", ""}},
 	{"v0.1.0-alpha.1", Version{"v", 0, 1, 0, "alpha.1", ""}},
 	{"=0.1.0-beta+build.0001", Version{"=", 0, 1, 0, "beta", "build.0001"}},
-	{"версия1024.2048.4096-βββ+¾", Version{"версия", 1024, 2048, 4096, "βββ", "¾"}},
+	{"версия1024.2048.4096-βββ+¾", Version{"версия", 1024, 2048, 4096, "βββ", "¾"}}, // semver.org actually restricts identifiers/buildmeta to [a-zA-Z0-9-], who cares though
 }
 
 func TestParseVersions(t *testing.T) {
