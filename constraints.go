@@ -5,32 +5,89 @@ import (
 	"strconv"
 )
 
-func (v *Version) SatisfiesPessimistic(major, minor int) bool {
-	return v.Major == major && v.Minor >= minor
+func (v *Version) SatisfiesPessimistic(c *Constraint) bool {
+	if c.MatchPatch {
+		return v.Major == c.Major && v.Minor == c.Minor && v.Patch >= c.Patch
+	}
+	return v.Major == c.Major && v.Minor >= c.Minor
 }
 
-func (v *Version) SatisfiesPessimisticWithPatch(major, minor, patch int) bool {
-	return v.Major == major && v.Minor == minor && v.Patch >= patch
+func (v *Version) SatisfiesExact(c *Constraint) bool {
+	result := v.Major == c.Major && v.Minor == c.Minor
+	if c.MatchPatch {
+		return result && v.Patch == c.Patch
+	}
+	return result
 }
+
+func (v *Version) SatisfiesLessThan(c *Constraint) bool {
+	if v.Major < c.Major {
+		return true
+	}
+	if v.Minor < c.Minor {
+		return true
+	}
+	if c.MatchPatch && v.Patch < c.Patch {
+		return true
+	}
+	return false
+}
+
+func (v *Version) SatisfiesLessThanOrEqual(c *Constraint) bool {
+	return v.SatisfiesLessThan(c) || v.SatisfiesExact(c)
+}
+
+func (v *Version) SatisfiesGreaterThan(c *Constraint) bool {
+	if v.Major > c.Major {
+		return true
+	}
+	if v.Minor > c.Minor {
+		return true
+	}
+	if c.MatchPatch && v.Patch > c.Patch {
+		return true
+	}
+	return false
+}
+
+func (v *Version) SatisfiesGreaterThanOrEqual(c *Constraint) bool {
+	return v.SatisfiesGreaterThan(c) || v.SatisfiesExact(c)
+}
+
+var constrRegexp = regexp.MustCompile(`^(|~>|\^|<|>|<=|>=|==) ?([0-9]+)\.([0-9]+)(\.([0-9]+))?`)
 
 func (v *Version) Satisfies(constraint string) bool {
 	if constraint == "" || constraint == "*" || constraint == "x" {
 		return true
 	}
 
-	pessimisticWithPatchMatches := regexp.MustCompile(`^(?:~>|\^) ?([0-9]+)\.([0-9]+)(\.([0-9]+))`).FindStringSubmatch(constraint)
-	if pessimisticWithPatchMatches != nil {
-		major, _ := strconv.Atoi(pessimisticWithPatchMatches[1])
-		minor, _ := strconv.Atoi(pessimisticWithPatchMatches[2])
-		patch, _ := strconv.Atoi(pessimisticWithPatchMatches[4])
-		return v.SatisfiesPessimisticWithPatch(major, minor, patch)
+	operator := ""
+	constr := new(Constraint)
+	matches := constrRegexp.FindStringSubmatch(constraint)
+	if matches != nil {
+		operator = matches[1]
+		constr.Major, _ = strconv.Atoi(matches[2])
+		constr.Minor, _ = strconv.Atoi(matches[3])
+		if matches[5] != "" {
+			constr.Patch, _ = strconv.Atoi(matches[5])
+			constr.MatchPatch = true
+		}
 	}
 
-	pessimisticMatches := regexp.MustCompile(`^(?:~>|\^) ?([0-9]+)\.([0-9]+)`).FindStringSubmatch(constraint)
-	if pessimisticMatches != nil {
-		major, _ := strconv.Atoi(pessimisticMatches[1])
-		minor, _ := strconv.Atoi(pessimisticMatches[2])
-		return v.SatisfiesPessimistic(major, minor)
+	// fmt.Println(operator, constr)
+
+	if operator == "~>" || operator == "^" {
+		return v.SatisfiesPessimistic(constr)
+	} else if operator == "" || operator == "==" {
+		return v.SatisfiesExact(constr)
+	} else if operator == "<" {
+		return v.SatisfiesLessThan(constr)
+	} else if operator == ">" {
+		return v.SatisfiesGreaterThan(constr)
+	} else if operator == "<=" {
+		return v.SatisfiesLessThanOrEqual(constr)
+	} else if operator == ">=" {
+		return v.SatisfiesGreaterThanOrEqual(constr)
 	}
 
 	return false

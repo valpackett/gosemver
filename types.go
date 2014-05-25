@@ -10,3 +10,10 @@ type Version struct {
 }
 
 type Versions []Version
+
+type Constraint struct {
+	Major      int
+	Minor      int
+	Patch      int
+	MatchPatch bool // because Go does not have neither nils nor Option/Maybe, how the fuck else do we know if Patch == 0 means match against zero or don't match?
+}
