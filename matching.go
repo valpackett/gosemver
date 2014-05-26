@@ -1,6 +1,7 @@
 package gosemver
 
 import (
+	"fmt"
 	"sort"
 )
 
@@ -23,10 +24,14 @@ func FindAll(vers []Version, constraint string) ([]Version, error) {
 	}
 }
 
-func FindMaxOp(vers []Version, operator string, constraint Constraint) Version {
+func FindMaxOp(vers []Version, operator string, constraint Constraint) (Version, error) {
 	matchingVers := FindAllOp(vers, operator, constraint)
 	sort.Sort(Versions(matchingVers))
-	return matchingVers[len(matchingVers)-1]
+	if len(matchingVers) >= 1 {
+		return matchingVers[len(matchingVers)-1], nil
+	} else {
+		return Version{}, fmt.Errorf("No matching versions found.")
+	}
 }
 
 func FindMax(vers []Version, constraint string) (Version, error) {
@@ -34,6 +39,6 @@ func FindMax(vers []Version, constraint string) (Version, error) {
 	if err != nil {
 		return Version{}, err
 	} else {
-		return FindMaxOp(vers, operator, constr), nil
+		return FindMaxOp(vers, operator, constr)
 	}
 }
