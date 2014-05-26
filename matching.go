@@ -15,7 +15,7 @@ func FindAllOp(vers []Version, operator string, constraint Constraint) []Version
 }
 
 func FindAll(vers []Version, constraint string) ([]Version, error) {
-	operator, constr, err := parseConstraint(constraint)
+	operator, constr, err := ParseConstraint(constraint)
 	if err != nil {
 		return make([]Version, 0), err
 	} else {
@@ -30,7 +30,7 @@ func FindMaxOp(vers []Version, operator string, constraint Constraint) Version {
 }
 
 func FindMax(vers []Version, constraint string) (Version, error) {
-	operator, constr, err := parseConstraint(constraint)
+	operator, constr, err := ParseConstraint(constraint)
 	if err != nil {
 		return Version{}, err
 	} else {

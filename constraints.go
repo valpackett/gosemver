@@ -57,7 +57,7 @@ func (v Version) Satisfies(constraint string) (result bool, err error) {
 	if constraint == "" || constraint == "*" || constraint == "x" {
 		return true, nil
 	}
-	operator, constr, err := parseConstraint(constraint)
+	operator, constr, err := ParseConstraint(constraint)
 	if err != nil {
 		return false, err
 	} else {

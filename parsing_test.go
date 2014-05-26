@@ -20,7 +20,7 @@ var parseConstrTests = []parseConstrTestCase{
 
 func TestParseConstraints(t *testing.T) {
 	for _, tcase := range parseConstrTests {
-		resultOp, resultConstr, _ := parseConstraint(tcase.Input)
+		resultOp, resultConstr, _ := ParseConstraint(tcase.Input)
 		if resultOp != tcase.ResultOp || resultConstr != tcase.ResultConstr {
 			t.Error(
 				"For", tcase.Input,
@@ -46,7 +46,7 @@ var parseVersionTests = []parseVersionTestCase{
 
 func TestParseVersions(t *testing.T) {
 	for _, tcase := range parseVersionTests {
-		result, _ := parseVersion(tcase.Input)
+		result, _ := ParseVersion(tcase.Input)
 		if result != tcase.Result {
 			t.Error(
 				"For", tcase.Input,

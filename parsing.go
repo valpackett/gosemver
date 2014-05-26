@@ -8,7 +8,7 @@ import (
 
 var constrRegexp = regexp.MustCompile(`^(|~>|\^|<|>|<=|>=|==) ?([0-9]+)\.([0-9]+)(\.([0-9]+))?`)
 
-func parseConstraint(input string) (string, Constraint, error) {
+func ParseConstraint(input string) (string, Constraint, error) {
 	operator := ""
 	constr := Constraint{}
 	matches := constrRegexp.FindStringSubmatch(input)
@@ -28,7 +28,7 @@ func parseConstraint(input string) (string, Constraint, error) {
 
 var verRegexp = regexp.MustCompile(`^([^0-9]*)([0-9]+)\.([0-9]+)\.([0-9]+)(\-([^+]+))?(\+(.*))?`)
 
-func parseVersion(input string) (Version, error) {
+func ParseVersion(input string) (Version, error) {
 	ver := Version{}
 	matches := verRegexp.FindStringSubmatch(input)
 	if matches != nil {
@@ -44,11 +44,11 @@ func parseVersion(input string) (Version, error) {
 	return ver, nil
 }
 
-func parseVersions(input []string) ([]Version, error) {
+func ParseVersions(input []string) ([]Version, error) {
 	vers := make([]Version, len(input))
 	for i, verStr := range input {
 		var err error
-		vers[i], err = parseVersion(verStr)
+		vers[i], err = ParseVersion(verStr)
 		if err != nil {
 			return vers, err
 		}
