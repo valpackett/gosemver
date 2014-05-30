@@ -60,9 +60,8 @@ func (v Version) Satisfies(constraint string) (result bool, err error) {
 	operator, constr, err := ParseConstraint(constraint)
 	if err != nil {
 		return false, err
-	} else {
-		return v.SatisfiesOp(operator, constr), nil
 	}
+	return v.SatisfiesOp(operator, constr), nil
 }
 
 func (v Version) SatisfiesOp(operator string, constr Constraint) bool {
