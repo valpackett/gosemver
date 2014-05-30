@@ -1,4 +1,4 @@
-# gosemver
+# gosemver [![Build Status](https://travis-ci.org/myfreeweb/httpotion.svg?branch=master)](https://travis-ci.org/myfreeweb/httpotion)
 
 A [Semantic Versioning](http://semver.org) library for the Go programming language.
 
