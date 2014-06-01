@@ -26,6 +26,14 @@ func ParseConstraint(input string) (string, Constraint, error) {
 	return operator, constr, nil
 }
 
+func MustParseConstraint(input string) (string, constraint) {
+        operator, constr, err := ParseConstraint(input)
+        if err != nil {
+                panic(err)
+        }
+        return operator, constr
+}
+
 var verRegexp = regexp.MustCompile(`^([^0-9]*)([0-9]+)\.([0-9]+)\.([0-9]+)(\-([^+]+))?(\+(.*))?`)
 
 func ParseVersion(input string) (Version, error) {
@@ -44,6 +52,14 @@ func ParseVersion(input string) (Version, error) {
 	return ver, nil
 }
 
+func MustParseVersion(input string) Version {
+        ver, err := ParseVersion(input)
+        if err != nil {
+                panic(err)
+        }
+        return ver
+}
+
 func ParseVersions(input []string) ([]Version, error) {
 	vers := make([]Version, len(input))
 	for i, verStr := range input {
@@ -54,4 +70,12 @@ func ParseVersions(input []string) ([]Version, error) {
 		}
 	}
 	return vers, nil
+}
+
+func MustParseVersions(input []string) []Version {
+        vers, err := ParseVersions(input)
+        if err != nil {
+                panic(err)
+        }
+        return vers
 }

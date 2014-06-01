@@ -23,6 +23,14 @@ func FindAll(vers []Version, constraint string) ([]Version, error) {
 	return FindAllOp(vers, operator, constr), nil
 }
 
+func MustFindAll(vers []Version, constraint string) []Version {
+	ver, err := FindMax(vers, constraint)
+	if err != nil {
+		panic(err)
+	}
+	return ver
+}
+
 func FindMaxOp(vers []Version, operator string, constraint Constraint) (Version, error) {
 	matchingVers := FindAllOp(vers, operator, constraint)
 	sort.Sort(Versions(matchingVers))
@@ -38,4 +46,12 @@ func FindMax(vers []Version, constraint string) (Version, error) {
 		return Version{}, err
 	}
 	return FindMaxOp(vers, operator, constr)
+}
+
+func MustFindMax(vers []Version, constraint string) Version {
+	ver, err := FindMax(vers, constraint)
+	if err != nil {
+		panic(err)
+	}
+	return ver
 }
