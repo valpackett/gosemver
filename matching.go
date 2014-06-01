@@ -24,7 +24,7 @@ func FindAll(vers []Version, constraint string) ([]Version, error) {
 }
 
 func MustFindAll(vers []Version, constraint string) []Version {
-	ver, err := FindMax(vers, constraint)
+	ver, err := FindAll(vers, constraint)
 	if err != nil {
 		panic(err)
 	}
