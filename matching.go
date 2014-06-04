@@ -6,7 +6,7 @@ import (
 )
 
 func FindAllOp(vers []Version, operator string, constraint Constraint) []Version {
-	result := make([]Version, 0)
+	var result []Version
 	for _, v := range vers {
 		if v.SatisfiesOp(operator, constraint) {
 			result = append(result, v)
